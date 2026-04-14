@@ -46,7 +46,7 @@ export function saveState(cwd: string, state: PipelineState): void {
 	const dir = join(cwd, ".po");
 	if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
 	const statePath = join(dir, "pipeline-state.json");
-	const tmpPath = statePath + ".tmp";
+	const tmpPath = `${statePath}.tmp`;
 	writeFileSync(tmpPath, JSON.stringify(state, null, 2), "utf-8");
 	renameSync(tmpPath, statePath);
 }

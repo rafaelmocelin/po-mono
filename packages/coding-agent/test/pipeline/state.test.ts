@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { createFreshState, loadState, saveState } from "../../src/pipeline/state.js";
 
-const TEST_DIR = join(tmpdir(), "po-state-test-" + Date.now());
+const TEST_DIR = join(tmpdir(), `po-state-test-${Date.now()}`);
 
 beforeEach(() => mkdirSync(TEST_DIR, { recursive: true }));
 afterEach(() => rmSync(TEST_DIR, { recursive: true, force: true }));

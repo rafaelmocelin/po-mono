@@ -52,5 +52,5 @@ export function loadPriorSummaries(cwd: string): string {
 	if (files.length === 0) return "";
 
 	const summaries = files.map((f: string) => readFileSync(join(summaryDir, f), "utf-8"));
-	return "## Prior Step Summaries\n\n" + summaries.join("\n\n---\n\n");
+	return `## Prior Step Summaries\n\n${summaries.join("\n\n---\n\n")}`;
 }

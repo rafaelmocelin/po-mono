@@ -32,7 +32,7 @@ export function renderCostsTable(state: import("./state.js").PipelineState): str
 	const header = `Pipeline: ${state.pipeline_id.slice(0, 8)} | Total: $${state.steps_completed
 		.reduce((s, c) => s + c.cost.usd, 0)
 		.toFixed(2)}\n`;
-	const line = "─".repeat(73) + "\n";
+	const line = `${"─".repeat(73)}\n`;
 	const col = (s: string, w: number) => s.slice(0, w).padEnd(w);
 
 	const rows = state.steps_completed.map((s) => {
