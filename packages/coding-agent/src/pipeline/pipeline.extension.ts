@@ -9,7 +9,7 @@
  */
 
 import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
@@ -263,8 +263,6 @@ async function startStep(
 }
 
 function renderBoard(cwd: string): string {
-	const { existsSync, readdirSync, readFileSync } = require("node:fs") as typeof import("node:fs");
-	const { join } = require("node:path") as typeof import("node:path");
 	const issuesDir = join(cwd, "docs", "agent", "issues");
 	if (!existsSync(issuesDir)) return "No issues found. Run /pipeline to create issues.";
 
