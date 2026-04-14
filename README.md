@@ -146,6 +146,8 @@ tdd
   Tier: Sonnet (caveman mode)
 ```
 
+**Caveman mode:** Steps with `caveman: true` in their skill frontmatter prepend a terse operating mode instruction to the session — dropping articles, filler phrases, and pleasantries from the model's output. Active on `prd-to-issues` and `tdd`. Produces 65–75% shorter responses in code-heavy steps without losing technical substance.
+
 **Cross-step context:** After each step, Haiku generates a structured summary saved to `docs/agent/summaries/step-<name>-summary.md`. The next step loads all prior summaries as initial context.
 
 **State persistence:** `.po/pipeline-state.json` — written atomically (write to `.tmp`, then rename).
@@ -183,7 +185,7 @@ packages/coding-agent/src/pipeline/
 ├── summary-bridge.ts       # Haiku cross-step summary generation
 ├── cost-tracker.ts         # Per-step token and cost accounting
 ├── status-bar.ts           # Pipeline status string for the terminal footer
-├── caveman.ts              # Caveman prompt constant (65-75% output reduction)
+├── caveman.ts              # Caveman prompt constant — prepended when skill sets caveman: true
 ├── model-tiers.ts          # Tier → model ID resolution + 429 fallback chain
 ├── rtk-operations.ts       # BashOperations wrapper routing commands through RTK
 ├── github-sync.ts          # gh issue list → local .md cache synchronization
