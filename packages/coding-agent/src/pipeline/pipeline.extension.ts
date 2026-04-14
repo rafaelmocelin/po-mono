@@ -8,6 +8,10 @@
  * (or by adding to the default extension list in po's startup).
  */
 
+import { execSync } from "node:child_process";
+import { existsSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { renderCostsTable } from "./cost-tracker.js";
 import { syncIssuesFromGithub } from "./github-sync.js";
@@ -207,6 +211,39 @@ export default function pipelineExtension(pi: ExtensionAPI) {
 		description: "Show RTK token savings analytics",
 		handler: async (_args, ctx) => {
 			ctx.ui.notify("Run: rtk gain", "info");
+		},
+	});
+
+	// ── /setup ─────────────────────────────────────────────────────────────────
+	pi.registerCommand("setup", {
+		description: "Check po dependencies and guide installation",
+		handler: async (_args, ctx) => {
+			const checks: Array<{ name: string; cmd: string; installUrl: string }> = [
+				{ name: "rtk", cmd: "rtk --version", installUrl: "https://github.com/rtk-ai/rtk#installation" },
+				{ name: "gh", cmd: "gh auth status", installUrl: "https://cli.github.com" },
+				{ name: "git", cmd: "git --version", installUrl: "https://git-scm.com" },
+			];
+
+			const lines: string[] = ["## po Setup Check\n"];
+
+			for (const check of checks) {
+				try {
+					execSync(check.cmd, { stdio: "ignore" });
+					lines.push(`✓ ${check.name} — installed`);
+				} catch {
+					lines.push(`✗ ${check.name} — NOT FOUND. Install: ${check.installUrl}`);
+				}
+			}
+
+			// Check settings.json
+			const settingsPath = join(homedir(), ".po", "settings.json");
+			if (existsSync(settingsPath)) {
+				lines.push(`✓ ~/.po/settings.json — found`);
+			} else {
+				lines.push(`✗ ~/.po/settings.json — missing. Run: mkdir -p ~/.po && po --create-settings`);
+			}
+
+			ctx.ui.notify(lines.join("\n"), "info");
 		},
 	});
 }
