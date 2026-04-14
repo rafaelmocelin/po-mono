@@ -671,7 +671,7 @@ export class InteractiveMode {
 	 * Check npm registry for a newer version.
 	 */
 	private async checkForNewVersion(): Promise<string | undefined> {
-		if (process.env.PI_SKIP_VERSION_CHECK || process.env.PI_OFFLINE) return undefined;
+		if (process.env.PO_SKIP_VERSION_CHECK || process.env.PO_OFFLINE) return undefined;
 
 		try {
 			const response = await fetch("https://registry.npmjs.org/@mariozechner/pi-coding-agent/latest", {
@@ -693,7 +693,7 @@ export class InteractiveMode {
 	}
 
 	private async checkForPackageUpdates(): Promise<string[]> {
-		if (process.env.PI_OFFLINE) {
+		if (process.env.PO_OFFLINE) {
 			return [];
 		}
 
@@ -789,11 +789,11 @@ export class InteractiveMode {
 	}
 
 	private reportInstallTelemetry(version: string): void {
-		if (process.env.PI_OFFLINE) {
+		if (process.env.PO_OFFLINE) {
 			return;
 		}
 
-		const telemetryEnv = process.env.PI_TELEMETRY;
+		const telemetryEnv = process.env.PO_TELEMETRY;
 		const telemetryEnabled =
 			telemetryEnv !== undefined ? isTruthyEnvFlag(telemetryEnv) : this.settingsManager.getEnableInstallTelemetry();
 		if (!telemetryEnabled) {
@@ -3058,7 +3058,7 @@ export class InteractiveMode {
 		}
 
 		const currentText = this.editor.getExpandedText?.() ?? this.editor.getText();
-		const tmpFile = path.join(os.tmpdir(), `pi-editor-${Date.now()}.pi.md`);
+		const tmpFile = path.join(os.tmpdir(), `po-editor-${Date.now()}.po.md`);
 
 		try {
 			// Write current content to temp file
