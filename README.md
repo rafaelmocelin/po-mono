@@ -84,10 +84,15 @@ Create `~/.po/settings.json`:
 
 **Load the pipeline extension:**
 
-```bash
-mkdir -p ~/.po/agent/extensions
-cp packages/coding-agent/src/pipeline/pipeline.extension.ts ~/.po/agent/extensions/
+The extension must be loaded as a compiled JS wrapper that points into the built dist. After running `npm run build`, create `~/.po/agent/extensions/pipeline.extension.js`:
+
+```js
+// ~/.po/agent/extensions/pipeline.extension.js
+// Update the path below if you move the po-mono directory.
+export { default } from "/absolute/path/to/po-mono/packages/coding-agent/dist/pipeline/pipeline.extension.js";
 ```
+
+Replace `/absolute/path/to/po-mono` with the actual path where you cloned the repo (e.g. `/Users/you/po-mono`). The compiled extension and skill files are in `dist/pipeline/` — `npm run build` copies them there automatically.
 
 ---
 

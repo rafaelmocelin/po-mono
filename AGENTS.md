@@ -25,7 +25,8 @@ If you create or modify a test file, run it and iterate until it passes.
 - Skills: `packages/coding-agent/src/pipeline/skills/`
 - Skill frontmatter fields: `name`, `tier` (1–3), `caveman` (bool), `input_artifacts`, `output_artifact`, `preserve_on_compaction`
 - Extension entry: `packages/coding-agent/src/pipeline/pipeline.extension.ts`
-- Load extension: place in `~/.po/agent/extensions/` or `.po/extensions/`
+- Extension loader: `~/.po/agent/extensions/pipeline.extension.js` — a thin JS wrapper that re-exports from `dist/pipeline/pipeline.extension.js` using an absolute path
+- Skills at runtime: `packages/coding-agent/dist/pipeline/skills/` — copied there by `npm run build` (copy-assets step)
 - Pipeline state: `.po/pipeline-state.json` (written atomically)
 - Issue cache: `docs/agent/issues/NNN-slug.md` (YAML frontmatter)
 - Step summaries: `docs/agent/summaries/step-<name>-summary.md`
