@@ -27,6 +27,7 @@ import type { AssistantMessage, ImageContent, Message, Model, TextContent } from
 import { isContextOverflow, modelsAreEqual, resetApiProviders, supportsXhigh } from "@mariozechner/pi-ai";
 import { getDocsPath } from "../config.js";
 import { theme } from "../modes/interactive/theme/theme.js";
+import { createRtkBashOperations } from "../pipeline/rtk-operations.js";
 import { stripFrontmatter } from "../utils/frontmatter.js";
 import { sleep } from "../utils/sleep.js";
 import { type BashResult, executeBashWithOperations } from "./bash-executor.js";
@@ -2303,7 +2304,10 @@ export class AgentSession {
 				)
 			: createAllToolDefinitions(this._cwd, {
 					read: { autoResizeImages },
-					bash: { commandPrefix: shellCommandPrefix },
+					bash: {
+						commandPrefix: shellCommandPrefix,
+						operations: !process.argv.includes("--no-rtk") ? createRtkBashOperations() : undefined,
+					},
 				});
 
 		this._baseToolDefinitions = new Map(
