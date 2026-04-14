@@ -10,6 +10,7 @@
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { renderCostsTable } from "./cost-tracker.js";
+import { syncIssuesFromGithub } from "./github-sync.js";
 import { getOrchestrator } from "./orchestrator.js";
 import { createRtkBashOperations } from "./rtk-operations.js";
 import type { PipelineStepName } from "./state.js";
@@ -73,6 +74,7 @@ export default function pipelineExtension(pi: ExtensionAPI) {
 		description:
 			"Start or control the po pipeline. Args: [--from <step>] [--step <step>] [--issue <N>] [--design] [--resume]",
 		handler: async (args, ctx) => {
+			syncIssuesFromGithub(ctx.cwd);
 			const orch = getOrchestrator(ctx.cwd);
 			const argv = args.trim().split(/\s+/);
 
